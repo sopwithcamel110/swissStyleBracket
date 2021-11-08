@@ -9,9 +9,11 @@ class Player:
         self.score = 0
 
 def toBracket(members):
+    
     # Setup Vars
     bracket = []
     matchup = []
+    bye = None
     
     while len(members) > 1:# Stop when list is empty
         # Add first element in list
@@ -57,12 +59,13 @@ def toBracket(members):
             matchup = []
             continue
         value.lastColor = 0
-
-    return bracket
+    if len(members) % 2 == 1:#Add bye if applicable
+        bye = members[-1]
+    return bracket, bye
 
 # TESTING VARS to avoid input
-names = ['tyler', 'lemon', 'morgan', 'justin', 'michael', 'jack', 'erik', 'darren', 'eesan', 'spencer']
-ratings = ['1843', '1400', '1400', '1250', '1200', '1200', '1000', '1000', '700', '100']
+names = ['tyler', 'lemon', 'morgan', 'justin', 'michael', 'jack', 'erik', 'darren', 'eesan', 'spencer', 'byeguy']
+ratings = ['1843', '1400', '1400', '1250', '1200', '1200', '1000', '1000', '700', '100', '50']
 def objInfo(obj):
     return ('[name: ' + obj.name + '][score: ' + str(obj.score) + ']')
 
@@ -95,12 +98,15 @@ while True:
     members.sort(key=lambda x: x.score, reverse=True)
 
     # Create bracket for round
-    bracket = toBracket(members)
+    bracket, bye = toBracket(members)
 
     # Display Matchups
     print("__Round " + str(roundNum) + "__")
     for i in bracket:
         print(i[0].name + " vs " + i[1].name)
+    if bye != None:
+        print("BYE: " + bye.name)
+        bye.score += 1
 
     # Get Scores
     print("Enter Who Won Each Game. (0 for white, 1 for black, 2 for draw)")
